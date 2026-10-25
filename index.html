@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>AR Video Experience</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    .a-enter-vr, .a-enter-ar, .a-orientation-modal, .a-modal, #a-scene-container { 
+      display: none !important; 
+      visibility: hidden !important; 
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+    }
+    #audio-toggle-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10000;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      transition: all 0.2s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #audio-toggle-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+  <script>
+    let isGlobalMuted = false;
+    AFRAME.registerComponent("ar-video-controller", {
+      schema: {
+        video: { type: "selector" },
+        autoPlay: { type: "boolean", default: true }
+      },
+      init: function () {
+        const vid = this.data.video;
+        if (!vid) return;
+        this.el.addEventListener("targetFound", () => {
+          if (this.data.autoPlay) {
+            vid.muted = isGlobalMuted;
+            vid.play().catch(e => console.log("Waiting for user tap:", e));
+          }
+        });
+        this.el.addEventListener("targetLost", () => {
+          vid.pause();
+        });
+      }
+    });
+    function toggleAudio() {
+      isGlobalMuted = !isGlobalMuted;
+      const vids = document.querySelectorAll("video");
+      vids.forEach(v => { v.muted = isGlobalMuted; });
+      const btn = document.getElementById("audio-toggle-btn");
+      if (btn) {
+        btn.innerHTML = isGlobalMuted 
+          ? "<span>🔇</span><span>صدا: خاموش</span>" 
+          : "<span>🔊</span><span>صدا: روشن</span>";
+      }
+    }
+  </script>
+</head>
+<body>
+  <button id="audio-toggle-btn" onclick="toggleAudio()">
+    <span>🔊</span>
+    <span>صدا: روشن</span>
+  </button>
+  <a-scene 
+    mindar-image="imageTargetSrc: ./targets.mind;" 
+    color-space="sRGB" 
+    renderer="colorManagement: true, physicallyCorrectLights" 
+    vr-mode-ui="enabled: false" 
+    device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <video id="vid-0" src="videos/videos1.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-1" src="videos/videos2.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-2" src="videos/videos3.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-3" src="videos/videos4.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-4" src="videos/videos5.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-5" src="videos/videos6.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-6" src="videos/videos7.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-7" src="videos/videos8.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-8" src="videos/videos9.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-9" src="videos/videos10.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-10" src="videos/videos11.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-11" src="videos/videos12.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-12" src="videos/videos13.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-13" src="videos/videos14.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-14" src="videos/videos15.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-15" src="videos/videos16.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-16" src="videos/videos17.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-17" src="videos/videos18.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-18" src="videos/videos19.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+      <video id="vid-19" src="videos/videos20.mp4" preload="auto" crossorigin="anonymous" webkit-playsinline playsinline loop></video>
+    </a-assets>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!-- تارگت 0 : ویدیوی اول -->
+    <a-entity mindar-image-target="targetIndex: 0" ar-video-controller="video: #vid-0; autoPlay: true">
+      <a-plane 
+        src="#vid-0" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 1 : ویدیوی 2 -->
+    <a-entity mindar-image-target="targetIndex: 1" ar-video-controller="video: #vid-1; autoPlay: true">
+      <a-plane 
+        src="#vid-1" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 2 : ویدیوی 3 -->
+    <a-entity mindar-image-target="targetIndex: 2" ar-video-controller="video: #vid-2; autoPlay: true">
+      <a-plane 
+        src="#vid-2" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 3 : ویدیوی 4 -->
+    <a-entity mindar-image-target="targetIndex: 3" ar-video-controller="video: #vid-3; autoPlay: true">
+      <a-plane 
+        src="#vid-3" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 4 : ویدیوی 5 -->
+    <a-entity mindar-image-target="targetIndex: 4" ar-video-controller="video: #vid-4; autoPlay: true">
+      <a-plane 
+        src="#vid-4" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 5 : ویدیوی 6 -->
+    <a-entity mindar-image-target="targetIndex: 5" ar-video-controller="video: #vid-5; autoPlay: true">
+      <a-plane 
+        src="#vid-5" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 6 : ویدیوی 7 -->
+    <a-entity mindar-image-target="targetIndex: 6" ar-video-controller="video: #vid-6; autoPlay: true">
+      <a-plane 
+        src="#vid-6" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 7 : ویدیوی 8 -->
+    <a-entity mindar-image-target="targetIndex: 7" ar-video-controller="video: #vid-7; autoPlay: true">
+      <a-plane 
+        src="#vid-7" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 8 : ویدیوی 9 -->
+    <a-entity mindar-image-target="targetIndex: 8" ar-video-controller="video: #vid-8; autoPlay: true">
+      <a-plane 
+        src="#vid-8" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 9 : ویدیوی 10 -->
+    <a-entity mindar-image-target="targetIndex: 9" ar-video-controller="video: #vid-9; autoPlay: true">
+      <a-plane 
+        src="#vid-9" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 10 : ویدیوی 11 -->
+    <a-entity mindar-image-target="targetIndex: 10" ar-video-controller="video: #vid-10; autoPlay: true">
+      <a-plane 
+        src="#vid-10" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 11 : ویدیوی 12 -->
+    <a-entity mindar-image-target="targetIndex: 11" ar-video-controller="video: #vid-11; autoPlay: true">
+      <a-plane 
+        src="#vid-11" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 12 : ویدیوی 13 -->
+    <a-entity mindar-image-target="targetIndex: 12" ar-video-controller="video: #vid-12; autoPlay: true">
+      <a-plane 
+        src="#vid-12" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 13 : ویدیوی 14 -->
+    <a-entity mindar-image-target="targetIndex: 13" ar-video-controller="video: #vid-13; autoPlay: true">
+      <a-plane 
+        src="#vid-13" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 14 : ویدیوی 15 -->
+    <a-entity mindar-image-target="targetIndex: 14" ar-video-controller="video: #vid-14; autoPlay: true">
+      <a-plane 
+        src="#vid-14" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 15 : ویدیوی 16 -->
+    <a-entity mindar-image-target="targetIndex: 15" ar-video-controller="video: #vid-15; autoPlay: true">
+      <a-plane 
+        src="#vid-15" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 16 : ویدیوی 17 -->
+    <a-entity mindar-image-target="targetIndex: 16" ar-video-controller="video: #vid-16; autoPlay: true">
+      <a-plane 
+        src="#vid-16" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 17 : ویدیوی 18 -->
+    <a-entity mindar-image-target="targetIndex: 17" ar-video-controller="video: #vid-17; autoPlay: true">
+      <a-plane 
+        src="#vid-17" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 18 : ویدیوی 19 -->
+    <a-entity mindar-image-target="targetIndex: 18" ar-video-controller="video: #vid-18; autoPlay: true">
+      <a-plane 
+        src="#vid-18" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+
+    <!-- تارگت 19 : ویدیوی 20 -->
+    <a-entity mindar-image-target="targetIndex: 19" ar-video-controller="video: #vid-19; autoPlay: true">
+      <a-plane 
+        src="#vid-19" 
+        position="0 0 0.01" 
+        rotation="0 0 0" 
+        width="1" 
+        height="0.56"
+        material="shader: flat; transparent: true; opacity: 1;">
+      </a-plane>
+    </a-entity>
+  </a-scene>
+</body>
+</html>
